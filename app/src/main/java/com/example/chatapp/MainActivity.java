@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupViewPager(ViewPager viewPager) {
-        fireAuth = FirebaseAuth.getInstance();
+
         firebaseUser = fireAuth.getCurrentUser();
         final ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new ChatFragment(), "Chat");
