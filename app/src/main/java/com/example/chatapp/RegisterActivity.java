@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Html;
 import android.text.TextUtils;
 import android.widget.Button;
 import android.widget.EditText;
@@ -42,6 +43,8 @@ public class RegisterActivity extends AppCompatActivity {
         regPassword = findViewById(R.id.password);
         registerBtn = findViewById(R.id.registerBtn);
         signIn = findViewById(R.id.signinHere);
+        String sourceString ="Are you registered ? <b> Sign In</b> Now";
+        signIn.setText(Html.fromHtml(sourceString));
         regUserType = findViewById(R.id.switch1);
         registerBtn.setOnClickListener(view -> {
             createUser();
@@ -53,8 +56,8 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void createUser(){
-        String email = regEmail.getText().toString();
-        String password = regPassword.getText().toString();
+        String email = regEmail.getText().toString().trim();
+        String password = regPassword.getText().toString().trim();
         final String userType = regUserType.isChecked() ? "premium" : "standard";
         //"premium"; // or set user type based on user input or some other way
 

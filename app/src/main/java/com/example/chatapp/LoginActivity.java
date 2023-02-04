@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Html;
 import android.text.TextUtils;
 import android.widget.Button;
 import android.widget.EditText;
@@ -35,7 +36,8 @@ public class LoginActivity extends AppCompatActivity {
         regPassword = findViewById(R.id.password);
         loginBtn = findViewById(R.id.loginButton);
         signUp = findViewById(R.id.signupHere);
-
+        String sourceString ="Not Yet registered ? <b> Sign Up</b> Now";
+        signUp.setText(Html.fromHtml(sourceString));
         loginBtn.setOnClickListener(view -> {
             loginUser();
 
@@ -46,8 +48,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void loginUser(){
-        String email = regEmail.getText().toString();
-        String password = regPassword.getText().toString();
+        String email = regEmail.getText().toString().trim();
+        String password = regPassword.getText().toString().trim();
 
         if(TextUtils.isEmpty(email)){
             regEmail.setError("El correo electrónico no puede estar vacío");
@@ -63,7 +65,7 @@ public class LoginActivity extends AppCompatActivity {
                         Toast.makeText(LoginActivity.this, "Usuario conectado correctamente", Toast.LENGTH_SHORT).show();
                         startActivity(new Intent(LoginActivity.this, MainActivity.class));
                     }else{
-                        Toast.makeText(LoginActivity.this, "Iniciar sesión error: "+ task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }
             });

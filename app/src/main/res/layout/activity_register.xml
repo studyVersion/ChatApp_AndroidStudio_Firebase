@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
-    android:background="@drawable/background"
+    android:background="@drawable/background2"
     tools:context=".RegisterActivity">
 
     <androidx.cardview.widget.CardView
@@ -34,7 +34,7 @@
                 android:text="Register"
                 android:textSize="36sp"
                 android:textStyle="bold"
-                android:textColor="@color/blues"
+                android:textColor="@color/black"
                 android:textAlignment="center"/>
             <EditText
                 android:layout_width="match_parent"
@@ -68,19 +68,20 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="35dp"
                 android:padding="8dp"
-                android:text="Cuenta Premium"
-                android:textColor="@color/blues"
+                android:text="Premium Account"
+                android:textColor="@color/purple_700"
                 android:textSize="16sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                />
 
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:id="@+id/registerBtn"
-                android:text="Login"
+                android:text="Resister"
                 android:textSize="18sp"
                 android:layout_marginTop="25dp"
-                android:backgroundTint="#7899FC"
+                android:backgroundTint="@color/black"
                 app:cornerRadius="20dp"/>
 
         </LinearLayout>
@@ -92,7 +93,7 @@
         android:id="@+id/signinHere"
         android:padding="8dp"
         android:layout_marginTop="15dp"
-        android:text="Are you registered ? SignIn Now"
+        android:text="Are you registered ? Sign In Now"
         android:textSize="14sp"
         android:textAlignment="center"
         android:textColor="@color/blues"
