@@ -1,33 +1,34 @@
 {
   "project_info": {
-    "project_number": "646329261792",
-    "project_id": "chatapp-79714",
-    "storage_bucket": "chatapp-79714.appspot.com"
+    "project_number": "1080323379439",
+    "firebase_url": "https://swisscaps-6c476-default-rtdb.firebaseio.com",
+    "project_id": "swisscaps-6c476",
+    "storage_bucket": "swisscaps-6c476.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:646329261792:android:fcba683a3b70290ca1fa85",
+        "mobilesdk_app_id": "1:1080323379439:android:e9fd05a82c267b06f08b1a",
         "android_client_info": {
-          "package_name": "com.example.chatapp"
+          "package_name": "com.example.SwissCaps"
         }
       },
       "oauth_client": [
         {
-          "client_id": "646329261792-a2o4rapj2ose0dq6p1ucv02ipsiodofs.apps.googleusercontent.com",
+          "client_id": "1080323379439-pfhoomkhikf3i81sbemc1qbfo1ln8ev3.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyABC8jzkue3EkFDTF7W2t5il8VJaZ50BXg"
+          "current_key": "AIzaSyCfQX10IY67-QbgXqH-R7VvPTkhVwGjNfo"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "646329261792-a2o4rapj2ose0dq6p1ucv02ipsiodofs.apps.googleusercontent.com",
+              "client_id": "1080323379439-pfhoomkhikf3i81sbemc1qbfo1ln8ev3.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

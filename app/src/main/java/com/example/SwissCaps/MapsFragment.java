@@ -1,4 +1,4 @@
-package com.example.chatapp;
+package com.example.SwissCaps;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -24,7 +24,6 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;

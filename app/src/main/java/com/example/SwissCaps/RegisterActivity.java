@@ -1,4 +1,4 @@
-package com.example.chatapp;
+package com.example.SwissCaps;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;

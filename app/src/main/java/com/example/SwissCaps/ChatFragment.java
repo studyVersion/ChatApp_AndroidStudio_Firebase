@@ -1,14 +1,10 @@
-package com.example.chatapp;
+package com.example.SwissCaps;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
 import android.widget.ListView;
-
-
 import androidx.fragment.app.Fragment;
 
 import java.util.ArrayList;

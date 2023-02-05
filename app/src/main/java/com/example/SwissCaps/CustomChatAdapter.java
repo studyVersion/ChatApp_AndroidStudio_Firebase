@@ -1,4 +1,4 @@
-package com.example.chatapp;
+package com.example.SwissCaps;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
