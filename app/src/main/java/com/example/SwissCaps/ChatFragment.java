@@ -15,27 +15,33 @@ import java.util.ArrayList;
  */
 public class ChatFragment extends Fragment {
     ListView listview;
-    String[] values = new String[] { "Jan",
+    String[] values = new String[] { "Juan",
             "Badre",
             "Adnane",
             "Roman",
             "Victor",
-            "Kevin"
+            "Kevin",
+            "Lucas",
+            "Pablo"
     };
     String[] chatDescription = new String[] { "Hey There! Are you using chatApp?",
             "All data is...ummm...safe",
             "How is the scholarship going on?",
             "This morning i woke up at night",
-            "Kya aapne kabhi online hotel booking kiya hai?",
-            "Photo"
+            "are you kidding me man! you were supposed to be here ages ago!!",
+            "Photo",
+            "shut up haha",
+            "okey deal!"
     };
 
-    String[] chatDates = new String[] { "08:58",
+    String[] chatDates = new String[] { "08:58   ",
             "YESTERDAY",
-            "05/03/2018",
-            "03/03/2018",
-            "27/02/2018",
-            "26/02/2018"
+            "05/02/2023",
+            "03/01/2023",
+            "27/01/2023",
+            "26/01/2023",
+            "27/12/2022",
+            "26/11/2022"
     };
 
     public ChatFragment() {

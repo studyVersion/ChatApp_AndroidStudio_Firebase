@@ -14,10 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-/**
- * Created by Rajat Kumar Gupta on 25-03-2018.
- */
-
 public class CustomChatAdapter extends ArrayAdapter<String>{
     private final Context context;
     private List<String> chatNames;
@@ -73,6 +69,5 @@ public class CustomChatAdapter extends ArrayAdapter<String>{
             return 2;
         }else
             return 3;
-
     }
 }

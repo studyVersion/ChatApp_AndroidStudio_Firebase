@@ -12,8 +12,9 @@ import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
+
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -21,6 +22,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -47,7 +49,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
 
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,13 +56,11 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         editor = sharedPreferences.edit();
 
     }
-    public boolean onTouchEvent(MotionEvent event) {
-        return false;
-    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        mView = inflater.inflate(R.layout.fragment_maps, null);
+        mView = inflater.inflate(R.layout.fragment_maps, container,false);
         return mView;
     }
 
@@ -74,6 +73,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onResume() {
         super.onResume();
+
         ((MainActivity) getActivity()).disableSwipe();
         float markerLatitude = sharedPreferences.getFloat("marker_latitude", 0);
         float markerLongitude = sharedPreferences.getFloat("marker_longitude", 0);

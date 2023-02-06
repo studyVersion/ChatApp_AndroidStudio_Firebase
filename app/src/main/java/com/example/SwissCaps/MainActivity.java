@@ -4,17 +4,20 @@ import android.content.Intent;
 import android.os.Bundle;
 
 
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.firebase.auth.FirebaseAuth;
@@ -75,6 +78,22 @@ public class MainActivity extends AppCompatActivity {
                     String userType = dataSnapshot.getValue(String.class);
                     if (userType != null && userType.equals("premium")) {
                         adapter.addFragment(new MapsFragment(), "ParkPal");
+                        FloatingActionButton fab = findViewById(R.id.floatingBtn);
+                        viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+                            @Override
+                            public void onPageSelected(int position) {
+                                super.onPageSelected(position);
+                                if (adapter.createFragment(position) instanceof MapsFragment) {
+                                    CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) fab.getLayoutParams();
+                                    params.gravity = Gravity.START | Gravity.BOTTOM;
+                                    fab.setLayoutParams(params);
+                                } else {
+                                    CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) fab.getLayoutParams();
+                                    params.gravity = Gravity.END | Gravity.BOTTOM;
+                                    fab.setLayoutParams(params);
+                                }
+                            }
+                        });
                         adapter.notifyDataSetChanged();
                     }
                 }
