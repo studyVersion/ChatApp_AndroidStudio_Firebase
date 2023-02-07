@@ -20,6 +20,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -117,24 +120,30 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                 mMapView.getMapAsync(this);
             }
         } else {
-            requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+            requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION);
         }
 
     }
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == 1) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                if (mMapView != null) {
-                    mMapView.onCreate(null);
-                    mMapView.onResume();
-                    mMapView.getMapAsync(this);
+    private ActivityResultLauncher<String> requestPermissionLauncher = registerForActivityResult(
+            new ActivityResultContracts.RequestPermission(),
+            new ActivityResultCallback<Boolean>() {
+                @Override
+                public void onActivityResult(Boolean result) {
+
+                    if (result) {
+                        if (mMapView != null) {
+                            mMapView.onCreate(null);
+                            mMapView.onResume();
+                            mMapView.getMapAsync(MapsFragment.this);
+                        }
+                    } else {
+                        // PERMISSION NOT GRANTED
+                    }
                 }
-            } else {
-            // Permission not granted, handle appropriately
             }
-        }
-    }
+    );
+
+
         @Override
     public void onMapReady(GoogleMap googleMap) {
         MapsInitializer.initialize(getContext());
