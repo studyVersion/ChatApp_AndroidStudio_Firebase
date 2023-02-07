@@ -10,7 +10,9 @@ import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
+import android.location.Criteria;
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -45,12 +47,12 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 
 public class MapsFragment extends Fragment implements OnMapReadyCallback {
-    GoogleMap mMap;
-    MapView mMapView;
-    View mView;
-    final Marker[] marker = {null};
-    SharedPreferences sharedPreferences;
-    SharedPreferences.Editor editor;
+    private GoogleMap mMap;
+    private MapView mMapView;
+    private View mView;
+    private Marker marker;
+    private SharedPreferences sharedPreferences;
+    private SharedPreferences.Editor editor;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -64,7 +66,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        mView = inflater.inflate(R.layout.fragment_maps, container,false);
+        mView = inflater.inflate(R.layout.fragment_maps, container, false);
         return mView;
     }
 
@@ -79,15 +81,13 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         super.onResume();
 
         ((MainActivity) getActivity()).disableSwipe();
+
         float markerLatitude = sharedPreferences.getFloat("marker_latitude", 0);
         float markerLongitude = sharedPreferences.getFloat("marker_longitude", 0);
+        LatLng latLng = new LatLng(markerLatitude, markerLongitude);
 
-        if (marker == null) {
-
-            if (markerLatitude != 0 && markerLongitude != 0) {
-                LatLng lastMarkerPosition = new LatLng(markerLatitude, markerLongitude);
-                marker[0] = mMap.addMarker(new MarkerOptions().position(lastMarkerPosition).icon(bitmapDescriptor(getContext(),R.drawable.car)));
-            }
+        if (latLng.latitude != 0 && latLng.longitude != 0) {
+            addMarkerOnMap(latLng);
         }
     }
 
@@ -97,8 +97,8 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         btncoche.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (marker[0] != null) {
-                    LatLng markerPosition = marker[0].getPosition();
+                if (marker != null) {
+                    LatLng markerPosition = marker.getPosition();
                     mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(markerPosition, 17f));
                 } else {
                     Toast.makeText(getActivity(), "No car is parked", Toast.LENGTH_SHORT).show();
@@ -107,23 +107,29 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         });
     }
 
+    private void initializeMap() {
+        mMapView.onCreate(null);
+        mMapView.onResume();
+        mMapView.getMapAsync(this);
+    }
+
+    private void checkLocationPermissionAndInitializeMap() {
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            initializeMap();
+        } else {
+            requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION);
+        }
+    }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mMapView = mView.findViewById(R.id.map);
         setButtonClickListener(view);
-        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            if (mMapView != null) {
-                mMapView.onCreate(null);
-                mMapView.onResume();
-                mMapView.getMapAsync(this);
-            }
-        } else {
-            requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION);
-        }
+        checkLocationPermissionAndInitializeMap();
 
     }
+
     private ActivityResultLauncher<String> requestPermissionLauncher = registerForActivityResult(
             new ActivityResultContracts.RequestPermission(),
             new ActivityResultCallback<Boolean>() {
@@ -131,35 +137,39 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                 public void onActivityResult(Boolean result) {
 
                     if (result) {
-                        if (mMapView != null) {
-                            mMapView.onCreate(null);
-                            mMapView.onResume();
-                            mMapView.getMapAsync(MapsFragment.this);
-                        }
+                        initializeMap();
                     } else {
-                        // PERMISSION NOT GRANTED
+                        Toast.makeText(getActivity(), "Location permission is required to display the map", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
     );
 
+    private void saveMarkerPositionToSharedPreferences(LatLng latLng) {
+        editor.putFloat("marker_latitude", (float) latLng.latitude);
+        editor.putFloat("marker_longitude", (float) latLng.longitude);
+        editor.apply();
+    }
 
-        @Override
-    public void onMapReady(GoogleMap googleMap) {
-        MapsInitializer.initialize(getContext());
-        mMap = googleMap;
-        googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+    private void setMapLongClickListener() {
+        mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
+            @Override
+            public void onMapLongClick(LatLng latLng) {
+                addMarkerOnMap(latLng);
+            }
+        });
+    }
 
-        float markerLatitude = sharedPreferences.getFloat("marker_latitude", 0);
-        float markerLongitude = sharedPreferences.getFloat("marker_longitude", 0);
+    private void addMarkerOnMap(LatLng latLng) {
+        mMap.clear();
+        marker = mMap.addMarker(new MarkerOptions().position(latLng).icon(bitmapDescriptor(getContext(), R.drawable.car)));
+        //mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(16));
+        saveMarkerPositionToSharedPreferences(latLng);
+    }
 
-        if (markerLatitude != 0 && markerLongitude != 0) {
-            LatLng lastMarkerPosition = new LatLng(markerLatitude, markerLongitude);
-            marker[0] = mMap.addMarker(new MarkerOptions().position(lastMarkerPosition).icon(bitmapDescriptor(getContext(),R.drawable.car)));
-        }
-
+    private void getCurrentLocation() {
         if (ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            //ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
             return;
         }
         FusedLocationProviderClient client = LocationServices.getFusedLocationProviderClient(getActivity());
@@ -171,39 +181,40 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                     // mMap.addMarker(new MarkerOptions().position(currentLocation).title("Current Location"));
                     mMap.moveCamera(CameraUpdateFactory.newLatLng(currentLocation));
                     mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 15f));
-
                 } else {
                     Toast.makeText(getActivity(), "Unable to get current location", Toast.LENGTH_SHORT).show();
                 }
             }
         });
         mMap.setMyLocationEnabled(true);
-        mMap.getUiSettings().setZoomControlsEnabled(true);
-        mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
-            @Override
-            public void onMapLongClick(LatLng latLng) {
-
-                if (marker != null && markerLatitude != 0 && markerLongitude != 0) {
-                    marker[0].remove();
-                }
-                marker[0] = mMap.addMarker(new MarkerOptions().position(latLng).icon(bitmapDescriptor(getContext(),R.drawable.car)));
-                editor.putFloat("marker_latitude", (float) latLng.latitude);
-                editor.putFloat("marker_longitude", (float) latLng.longitude);
-                editor.apply();
-            }
-
-        });
     }
-    private BitmapDescriptor bitmapDescriptor(Context context, int vector){
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+
+        float markerLatitude = sharedPreferences.getFloat("marker_latitude", 0);
+        float markerLongitude = sharedPreferences.getFloat("marker_longitude", 0);
+        LatLng latLng = new LatLng(markerLatitude, markerLongitude);
+
+        if (latLng.latitude != 0 && latLng.longitude != 0) {
+            addMarkerOnMap(latLng);
+        }
+        getCurrentLocation();
+        setMapLongClickListener();
+        mMap.getUiSettings().setZoomControlsEnabled(true);
+
+    }
+
+    private BitmapDescriptor bitmapDescriptor(Context context, int vector) {
         //crear el icono del coche
-        Drawable vectorDrawable= ContextCompat.getDrawable(context,vector);
-        vectorDrawable.setBounds(0,0,vectorDrawable.getIntrinsicWidth(),vectorDrawable.getIntrinsicHeight());
-        Bitmap bitmap= Bitmap.createBitmap(vectorDrawable.getIntrinsicWidth(),vectorDrawable.getIntrinsicHeight(),Bitmap.Config.ARGB_8888);
-        Canvas canvas=new Canvas(bitmap);
+        Drawable vectorDrawable = ContextCompat.getDrawable(context, vector);
+        vectorDrawable.setBounds(0, 0, vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight());
+        Bitmap bitmap = Bitmap.createBitmap(vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
         vectorDrawable.draw(canvas);
         return BitmapDescriptorFactory.fromBitmap(bitmap);
     }
-
 
 
 }
