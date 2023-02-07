@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
 
         adapter.addFragment(new ChatFragment(), "Chat");
         adapter.addFragment(new CallsFragment(), "Calls");
-        adapter.addFragment(new StatusFragment(), "Status");
+        adapter.addFragment(new StatusFragment(), "Profile");
         if (firebaseUser == null) {
             startActivity(new Intent(MainActivity.this, LoginActivity.class));
         } else {

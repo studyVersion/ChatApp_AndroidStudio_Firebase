@@ -55,6 +55,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         sharedPreferences = getActivity().getSharedPreferences("marker_data", MODE_PRIVATE);
         editor = sharedPreferences.edit();
 
+
     }
 
     @Nullable
@@ -108,15 +109,33 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mMapView = mView.findViewById(R.id.map);
-        if (mMapView != null) {
-            mMapView.onCreate(null);
-            mMapView.onResume();
-            mMapView.getMapAsync(this);
-        }
         setButtonClickListener(view);
-    }
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            if (mMapView != null) {
+                mMapView.onCreate(null);
+                mMapView.onResume();
+                mMapView.getMapAsync(this);
+            }
+        } else {
+            requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+        }
 
+    }
     @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == 1) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                if (mMapView != null) {
+                    mMapView.onCreate(null);
+                    mMapView.onResume();
+                    mMapView.getMapAsync(this);
+                }
+            } else {
+            // Permission not granted, handle appropriately
+            }
+        }
+    }
+        @Override
     public void onMapReady(GoogleMap googleMap) {
         MapsInitializer.initialize(getContext());
         mMap = googleMap;
@@ -131,7 +150,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         }
 
         if (ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+            //ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
             return;
         }
         FusedLocationProviderClient client = LocationServices.getFusedLocationProviderClient(getActivity());
@@ -155,7 +174,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
             @Override
             public void onMapLongClick(LatLng latLng) {
 
-                if (marker != null) {
+                if (marker != null && markerLatitude != 0 && markerLongitude != 0) {
                     marker[0].remove();
                 }
                 marker[0] = mMap.addMarker(new MarkerOptions().position(latLng).icon(bitmapDescriptor(getContext(),R.drawable.car)));
