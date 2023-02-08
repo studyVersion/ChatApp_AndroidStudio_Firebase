@@ -161,11 +161,13 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     }
 
     private void addMarkerOnMap(LatLng latLng) {
-        mMap.clear();
-        marker = mMap.addMarker(new MarkerOptions().position(latLng).icon(bitmapDescriptor(getContext(), R.drawable.car)));
-        //mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(16));
-        saveMarkerPositionToSharedPreferences(latLng);
+        if (mMap != null) {
+            mMap.clear();
+            marker = mMap.addMarker(new MarkerOptions().position(latLng).icon(bitmapDescriptor(getContext(), R.drawable.car)));
+            //mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+            mMap.animateCamera(CameraUpdateFactory.zoomTo(16));
+            saveMarkerPositionToSharedPreferences(latLng);
+        }
     }
 
     private void getCurrentLocation() {
