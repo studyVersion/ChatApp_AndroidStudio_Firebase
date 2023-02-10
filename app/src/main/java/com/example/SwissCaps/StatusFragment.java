@@ -2,6 +2,7 @@ package com.example.SwissCaps;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -9,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,7 +23,7 @@ import com.google.zxing.integration.android.IntentResult;
 public class StatusFragment extends Fragment  {
 
     private TextView scannedTextView;
-    Button scan;
+    private ImageButton scan;
     public StatusFragment() {
         // Required empty public constructor
     }
@@ -35,7 +37,9 @@ public class StatusFragment extends Fragment  {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_status, container, false);
         scannedTextView = view.findViewById(R.id.textQr);
+
         scan = view.findViewById(R.id.Scan);
+        scannedTextView.setBackground(null);
         scan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -62,10 +66,16 @@ public class StatusFragment extends Fragment  {
             } else {
                 String scannedContent = result.getContents();
                 if (scannedContent.startsWith("http")) {
+                    scannedTextView.setText(null);
+                    scannedTextView.setBackground(null);
                     Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(scannedContent));
                     startActivity(browserIntent);
                 } else {
-                    scannedTextView.setText(scannedContent);
+                    Drawable shape = getResources().getDrawable(R.drawable.rectangularshap);
+
+                        scannedTextView.setText(scannedContent);
+                        scannedTextView.setBackground(shape);
+
                 }
             }
         } else {
