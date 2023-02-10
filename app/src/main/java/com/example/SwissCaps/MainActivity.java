@@ -1,6 +1,7 @@
 package com.example.SwissCaps;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 
@@ -9,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
@@ -58,7 +60,10 @@ public class MainActivity extends AppCompatActivity {
         }
         viewPager2.setUserInputEnabled(true);
     }
-
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+    }
     private void setupViewPager(ViewPager2 viewPager) {
         fireAuth = FirebaseAuth.getInstance();
         firebaseUser = fireAuth.getCurrentUser();
@@ -67,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
 
         adapter.addFragment(new ChatFragment(), "Chat");
         adapter.addFragment(new CallsFragment(), "Calls");
-        adapter.addFragment(new StatusFragment(), "Profile");
+        adapter.addFragment(new StatusFragment(), "");
         if (firebaseUser == null) {
             startActivity(new Intent(MainActivity.this, LoginActivity.class));
         } else {
@@ -107,7 +112,12 @@ public class MainActivity extends AppCompatActivity {
         viewPager2.setAdapter(adapter);
         viewPager2.setUserInputEnabled(false);
         new TabLayoutMediator(tabLayout, viewPager2, (tab, position) -> {
-            tab.setText(adapter.mFragmentTitleList.get(position));
+            Drawable drawable = getResources().getDrawable(R.drawable.qr_scanner);
+            if (adapter.createFragment(position) instanceof StatusFragment) {
+                tab.setIcon(drawable);
+            }else{
+                tab.setText(adapter.mFragmentTitleList.get(position));
+            }
         }).attach();
     }
 
@@ -135,6 +145,7 @@ public class MainActivity extends AppCompatActivity {
             return mFragmentList.size();
         }
     }
+
     protected void disableSwipe() {
         viewPager2.setUserInputEnabled(false);
     }
@@ -142,6 +153,8 @@ public class MainActivity extends AppCompatActivity {
     protected void enableSwipe() {
         viewPager2.setUserInputEnabled(true);
     }
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
