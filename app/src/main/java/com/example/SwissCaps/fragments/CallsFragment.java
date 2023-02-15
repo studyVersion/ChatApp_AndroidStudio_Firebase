@@ -45,7 +45,7 @@ public class CallsFragment extends Fragment {
             namesList.add(names[i]);
         }
         final ArrayList<String> hoursList = new ArrayList<String>();
-        for (int i = 0; i < hours.length; ++i) {
+        for (int i = 0; i < names.length; ++i) {
             hoursList.add(hours[i]);
         }
         CustumCallAdapter a = new CustumCallAdapter(getActivity(), R.layout.call_item_card, namesList, hoursList);
