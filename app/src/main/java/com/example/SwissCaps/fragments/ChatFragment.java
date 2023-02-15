@@ -1,4 +1,4 @@
-package com.example.SwissCaps;
+package com.example.SwissCaps.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -6,6 +6,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import androidx.fragment.app.Fragment;
+
+import com.example.SwissCaps.R;
+import com.example.SwissCaps.adapters.CustomChatAdapter;
 
 import java.util.ArrayList;
 
@@ -67,7 +70,7 @@ public class ChatFragment extends Fragment {
         for (int i = 0; i < values.length; ++i) {
             chatDatesList.add(chatDates[i]);
         }
-        final CustomChatAdapter adapter = new CustomChatAdapter(getActivity(), R.layout.list_item_chat, chatNameList,chatDescriptionList,chatDatesList);
+        final CustomChatAdapter adapter = new CustomChatAdapter(getActivity(), R.layout.list_item_chat, chatNameList,chatDescriptionList, chatDatesList);
         listview.setAdapter(adapter);
         return rootView;
     }

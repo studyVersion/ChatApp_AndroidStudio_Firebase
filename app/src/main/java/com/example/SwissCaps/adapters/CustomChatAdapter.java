@@ -1,4 +1,4 @@
-package com.example.SwissCaps;
+package com.example.SwissCaps.adapters;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
+import com.example.SwissCaps.R;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -20,12 +22,12 @@ public class CustomChatAdapter extends ArrayAdapter<String>{
     private List<String> chatDescriptions;
     private List<String> chatDates;
 
-    public CustomChatAdapter(@NonNull Context context, int resource, List<String> chatNames, ArrayList<String> chatDescriptionList, ArrayList<String> chatDatesList) {
+    public CustomChatAdapter(@NonNull Context context, int resource, List<String> chatNames, ArrayList<String> chatDescriptionList, List<String> chatDates) {
         super(context,-1,chatNames);
         this.context = context;
         this.chatNames = chatNames;
         this.chatDescriptions = chatDescriptionList;
-        this.chatDates = chatDatesList;
+        this.chatDates = chatDates;
     }
     @SuppressLint("NewApi")
     @Override

@@ -6,11 +6,10 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:background="@drawable/background"
-    tools:context=".LoginActivity"
+    tools:context=".activities.LoginActivity"
     android:orientation="vertical">
 
     <androidx.cardview.widget.CardView
-
 
         android:layout_marginTop="240dp"
         android:layout_marginRight="20dp"
