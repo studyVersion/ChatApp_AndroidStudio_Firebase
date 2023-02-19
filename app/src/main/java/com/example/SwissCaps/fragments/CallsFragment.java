@@ -18,16 +18,33 @@ import java.util.ArrayList;
 public class CallsFragment extends Fragment {
 
     ListView listview;
-    String[] names = new String[] { "Juan",
-            "Badre",
-            "Adnane",
-            "Roman",
-            "Victor",
-            "Kevin",
-            "Lucas",
-            "Pablo"
+    String[] names = new String[] { "Juan Martinez",
+            "Badre Serhiri",
+            "Adnane El Biat",
+            "Roman Lfita",
+            "Victor Mendoza",
+            "Kevin Hart",
+            "Lucas Rodriges",
+            "Pablo Martinez",
+            "Adnane El Biat",
+            "Kevin Hart",
+            "Kevin Hart",
+            "Lucas Rodriges"
     };
-    String[] hours = new String[] { "18:45","18:45","18:45","18:45","18:45","18:45","18:45","18:45"
+
+    String[] hours = new String[] { "February 14, 20:54",
+                                    "(2) February 13, 18:45",
+                                    "February 12, 20:00",
+                                    "February 10, 18:00",
+                                    "(3) February 8, 19:25",
+                                    "February 5, 18:05",
+                                    "February 2, 14:45",
+                                    "January 30, 18:30",
+                                    "January 26, 17:38",
+                                    "January 25, 11:40",
+                                    "(2) January 22, 10:30",
+                                    "January 15, 18:30"
+
     };
 
     public CallsFragment() {

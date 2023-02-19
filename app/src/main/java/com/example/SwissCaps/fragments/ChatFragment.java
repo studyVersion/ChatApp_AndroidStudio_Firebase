@@ -25,7 +25,8 @@ public class ChatFragment extends Fragment {
             "Victor",
             "Kevin",
             "Lucas",
-            "Pablo"
+            "Pablo",
+            "Nouhad"
     };
     String[] chatDescription = new String[] { "Hey There! Are you using chatApp?",
             "All data is...ummm...safe",
@@ -34,17 +35,19 @@ public class ChatFragment extends Fragment {
             "are you kidding me man! you were supposed to be here ages ago!!",
             "Photo",
             "shut up haha",
-            "okey deal!"
+            "okey deal!",
+            "i'm sad :("
     };
 
-    String[] chatDates = new String[] { "08:58   ",
+    String[] chatDates = new String[] { "08:58",
             "YESTERDAY",
             "05/02/2023",
             "03/01/2023",
             "27/01/2023",
             "26/01/2023",
             "27/12/2022",
-            "26/11/2022"
+            "26/11/2022",
+            "23/11/2022"
     };
 
     public ChatFragment() {

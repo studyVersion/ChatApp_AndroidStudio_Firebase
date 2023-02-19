@@ -20,11 +20,11 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
 
-public class StatusFragment extends Fragment  {
+public class QrCodeFragment extends Fragment  {
 
     private TextView scannedTextView;
     private ImageButton scan;
-    public StatusFragment() {
+    public QrCodeFragment() {
         // Required empty public constructor
     }
 
@@ -35,7 +35,7 @@ public class StatusFragment extends Fragment  {
                              Bundle savedInstanceState) {
 
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_status, container, false);
+        View view = inflater.inflate(R.layout.fragment_qr_code, container, false);
         scannedTextView = view.findViewById(R.id.textQr);
 
         scan = view.findViewById(R.id.Scan);
@@ -43,7 +43,7 @@ public class StatusFragment extends Fragment  {
         scan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                IntentIntegrator integrator = IntentIntegrator.forSupportFragment(StatusFragment.this);
+                IntentIntegrator integrator = IntentIntegrator.forSupportFragment(QrCodeFragment.this);
 
                 integrator.setOrientationLocked(false);
                 integrator.setPrompt("Scan QR code");
