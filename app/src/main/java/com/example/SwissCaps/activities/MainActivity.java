@@ -84,8 +84,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupViewPager(ViewPager2 viewPager) {
-        fireAuth = FirebaseAuth.getInstance();
-        firebaseUser = fireAuth.getCurrentUser();
+
         tabLayout = findViewById(R.id.tabs);
         final ViewPagerAdapter adapter = new ViewPagerAdapter(this);
 
@@ -103,25 +102,29 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void setFragements(ViewPagerAdapter adapter) {
-        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users").child(firebaseUser.getUid());
-        userRef.child("userType").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                String userType = dataSnapshot.getValue(String.class);
-                if (userType != null && userType.equals("premium")) {
-                    createPremiumView(adapter);
+        if (firebaseUser == null) {
+            startActivity(new Intent(MainActivity.this, LoginActivity.class));
+        } else {
+            DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users").child(firebaseUser.getUid());
+            userRef.child("userType").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    String userType = dataSnapshot.getValue(String.class);
+                    if (userType != null && userType.equals("premium")) {
+                        createPremiumView(adapter);
 
-                } else {
-                    createNormalView(adapter);
+                    } else {
+                        createNormalView(adapter);
+                    }
+                    adapter.notifyDataSetChanged();
                 }
-                adapter.notifyDataSetChanged();
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // handle the error
-            }
-        });
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    // handle the error
+                }
+            });
+        }
     }
 
     public void setMapsFragement(ViewPagerAdapter adapter) {
